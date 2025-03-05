@@ -1,0 +1,33 @@
+{
+  "name": "xrpl-example",
+  "version": "0.1.0",
+  "description": "XRPL integration guide for beginners using All That Node RPC provider service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/welldonestudio/xrpl-example.git"
+  },
+  "keywords": [
+    "XRPL",
+    "All",
+    "That",
+    "Node",
+    "RPC",
+    "Provider",
+    "HTTP",
+    "Websocket"
+  ],
+  "author": "markjung96",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/welldonestudio/xrpl-example/issues"
+  },
+  "homepage": "https://github.com/welldonestudio/xrpl-example#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "xrpl": "^4.2.0"
+  }
+}
