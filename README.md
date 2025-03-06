@@ -281,6 +281,14 @@ wscat -c wss://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY
 { "command": "account_tx", "account": "rE7n5PFBejTkUtkzjqVvg1iyUMWus5FQC1", "ledger_index_min": -1, "ledger_index_max": -1 }
 ```
 
+## WebSocket 방식 Code 실행 결과
+<img width="496" alt="image" src="https://github.com/user-attachments/assets/51030ee9-4fc0-43f5-abba-d4cf7769bc51" />
+
+## Http 방식 Code 실행 결과
+<img width="523" alt="image" src="https://github.com/user-attachments/assets/7e661d03-0cd7-4d9c-985f-be505792c067" />
+
+
+
 ## 주요 참고사항
 
 1. **주소 형식**:
