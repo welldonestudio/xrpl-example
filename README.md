@@ -33,7 +33,7 @@ curl -X POST https://faucet.altnet.rippletest.net/accounts
 특정 계정의 정보와 잔액을 조회합니다:
 
 ```bash
-curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
+curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/780c83f1c3574254acd27f7d4b1092f7 \
      -H "Content-Type: application/json" \
      -d '{
           "method": "account_info",
@@ -48,12 +48,59 @@ curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
 - `account`: 조회할 계정 주소
 - `ledger_index`: 원장 상태 (`current`, `closed`, `validated` 또는 특정 인덱스)
 
+실제 응답 예시:
+```json
+{
+  "result": {
+    "account_data": {
+      "Account": "rE7n5PFBejTkUtkzjqVvg1iyUMWus5FQC1",
+      "Balance": "100000000",
+      "Flags": 0,
+      "LedgerEntryType": "AccountRoot",
+      "OwnerCount": 0,
+      "PreviousTxnID": "A7FCEBDE2AC0EC471C23F471C8AB32E06AC9143337EEDD42450288D987AEF964",
+      "PreviousTxnLgrSeq": 5369917,
+      "Sequence": 5369917,
+      "index": "EF848EE979A06658928D151D61DE55CA3D6CDD6E15102053CCDD27C2980CEF8D"
+    },
+    "account_flags": {
+      "allowTrustLineClawback": false,
+      "defaultRipple": false,
+      "depositAuth": false,
+      "disableMasterKey": false,
+      "disallowIncomingCheck": false,
+      "disallowIncomingNFTokenOffer": false,
+      "disallowIncomingPayChan": false,
+      "disallowIncomingTrustline": false,
+      "disallowIncomingXRP": false,
+      "globalFreeze": false,
+      "noFreeze": false,
+      "passwordSpent": false,
+      "requireAuthorization": false,
+      "requireDestinationTag": false
+    },
+    "ledger_current_index": 5390188,
+    "validated": false,
+    "status": "success"
+  },
+  "status": "success",
+  "type": "response",
+  "forwarded": true,
+  "warnings": [
+    {
+      "id": 2001,
+      "message": "This is a clio server. clio only serves validated data. If you want to talk to rippled, include 'ledger_index':'current' in your request"
+    }
+  ]
+}
+```
+
 ### 3. 트랜잭션 생성 및 서명
 
 송금 트랜잭션을 생성하고 서명합니다:
 
 ```bash
-curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
+curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/780c83f1c3574254acd27f7d4b1092f7 \
      -H "Content-Type: application/json" \
      -d '{
          "method": "sign",
@@ -65,7 +112,7 @@ curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
              "Destination": "rGfWw3jxQLr4GMjsTNQepmAkrMUwjJ2S4A",
              "Amount": "5000000", 
              "Fee": "12",
-             "Sequence": 12345
+             "Sequence": 5369917
            }
          }]
        }'
@@ -77,35 +124,109 @@ curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
 - `Destination`: 수신자 주소
 - `Amount`: 송금액 (드롭 단위, 1 XRP = 1,000,000 드롭)
 - `Fee`: 수수료 (드롭 단위)
-- `Sequence`: 계정의 현재 시퀀스 번호 (account_info에서 확인 가능)
+- `Sequence`: 계정의 현재 시퀀스 번호 (account_info에서 확인 필요)
+
+실제 응답 예시:
+```json
+{
+  "result": {
+    "deprecated": "This command has been deprecated and will be removed in a future version of the server. Please migrate to a standalone signing tool.",
+    "status": "success",
+    "tx_blob": "1200002280000000240051F03D6140000000004C4B4068400000000000000C7321ED2548243D83666114030817227BD82F489B42487563585ECEDDD5ADE320821B1F7440E46764E0E6E7C3FB3B8BA27D62E5218A333A5462DBB8485607A4D0971DA997BB27DEC00A953F1DF2C0BC8BB7A69B25FD9AA964E8C6BAC5218B7978F49687F70881149EB0ED3DA0B76506426BE6A863950CE89FF863168314A5C4B8D2671A96BDC60430034AB2D922A9485A1E",
+    "tx_json": {
+      "Account": "rE7n5PFBejTkUtkzjqVvg1iyUMWus5FQC1",
+      "Amount": "5000000",
+      "DeliverMax": "5000000",
+      "Destination": "rGfWw3jxQLr4GMjsTNQepmAkrMUwjJ2S4A",
+      "Fee": "12",
+      "Flags": 2147483648,
+      "Sequence": 5369917,
+      "SigningPubKey": "ED2548243D83666114030817227BD82F489B42487563585ECEDDD5ADE320821B1F",
+      "TransactionType": "Payment",
+      "TxnSignature": "E46764E0E6E7C3FB3B8BA27D62E5218A333A5462DBB8485607A4D0971DA997BB27DEC00A953F1DF2C0BC8BB7A69B25FD9AA964E8C6BAC5218B7978F49687F708",
+      "hash": "2F6AAE873F47DEAA5BD72653CC81B0B9CA1AFDDA4F225E2E255D361A3EC54DC5"
+    }
+  }
+}
+```
+
+> **참고**: 응답에서 "deprecated" 메시지가 있음에 주의하세요. 향후 서버 버전에서는 이 명령이 제거될 예정이므로, 독립 서명 도구로 마이그레이션하는 것이 권장됩니다.
 
 ### 4. 서명된 트랜잭션 제출
 
 생성된 서명을 네트워크에 제출합니다:
 
 ```bash
-curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
+curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/780c83f1c3574254acd27f7d4b1092f7 \
      -H "Content-Type: application/json" \
      -d '{
           "method": "submit",
           "params": [{
-            "tx_blob": "서명된_트랜잭션_문자열",
+            "tx_blob": "1200002280000000240051F03D6140000000004C4B4068400000000000000C7321ED2548243D83666114030817227BD82F489B42487563585ECEDDD5ADE320821B1F7440E46764E0E6E7C3FB3B8BA27D62E5218A333A5462DBB8485607A4D0971DA997BB27DEC00A953F1DF2C0BC8BB7A69B25FD9AA964E8C6BAC5218B7978F49687F70881149EB0ED3DA0B76506426BE6A863950CE89FF863168314A5C4B8D2671A96BDC60430034AB2D922A9485A1E",
             "ledger_index": "validated"
           }]
         }'
 ```
+
+실제 응답 예시:
+```json
+{
+  "result": {
+    "accepted": true,
+    "account_sequence_available": 5369918,
+    "account_sequence_next": 5369918,
+    "applied": true,
+    "broadcast": true,
+    "engine_result": "tesSUCCESS",
+    "engine_result_code": 0,
+    "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
+    "kept": true,
+    "open_ledger_cost": "10",
+    "queued": false,
+    "tx_blob": "1200002280000000240051F03D6140000000004C4B4068400000000000000C7321ED2548243D83666114030817227BD82F489B42487563585ECEDDD5ADE320821B1F7440E46764E0E6E7C3FB3B8BA27D62E5218A333A5462DBB8485607A4D0971DA997BB27DEC00A953F1DF2C0BC8BB7A69B25FD9AA964E8C6BAC5218B7978F49687F70881149EB0ED3DA0B76506426BE6A863950CE89FF863168314A5C4B8D2671A96BDC60430034AB2D922A9485A1E",
+    "tx_json": {
+      "Account": "rE7n5PFBejTkUtkzjqVvg1iyUMWus5FQC1",
+      "Amount": "5000000",
+      "Destination": "rGfWw3jxQLr4GMjsTNQepmAkrMUwjJ2S4A",
+      "Fee": "12",
+      "Flags": 2147483648,
+      "Sequence": 5369917,
+      "SigningPubKey": "ED2548243D83666114030817227BD82F489B42487563585ECEDDD5ADE320821B1F",
+      "TransactionType": "Payment",
+      "TxnSignature": "E46764E0E6E7C3FB3B8BA27D62E5218A333A5462DBB8485607A4D0971DA997BB27DEC00A953F1DF2C0BC8BB7A69B25FD9AA964E8C6BAC5218B7978F49687F708",
+      "hash": "2F6AAE873F47DEAA5BD72653CC81B0B9CA1AFDDA4F225E2E255D361A3EC54DC5"
+    },
+    "validated_ledger_index": 5390198,
+    "status": "success"
+  },
+  "status": "success",
+  "type": "response",
+  "forwarded": true,
+  "warnings": [
+    {
+      "id": 2001,
+      "message": "This is a clio server. clio only serves validated data. If you want to talk to rippled, include 'ledger_index':'current' in your request"
+    }
+  ]
+}
+```
+
+중요 응답 필드:
+- `engine_result`: 트랜잭션 상태 (tesSUCCESS는 성공을 의미)
+- `validated_ledger_index`: 트랜잭션이 포함된 원장 인덱스
+- `account_sequence_next`: 다음 트랜잭션에 사용할 시퀀스 번호
 
 ### 5. 트랜잭션 결과 조회
 
 트랜잭션 해시를 사용하여 결과를 확인합니다:
 
 ```bash
-curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/YOUR_API_KEY \
+curl -X POST https://xrp-testnet.g.allthatnode.com/full/json_rpc/780c83f1c3574254acd27f7d4b1092f7 \
      -H "Content-Type: application/json" \
      -d '{
           "method": "tx",
           "params": [{
-            "transaction": "트랜잭션_해시",
+            "transaction": "2F6AAE873F47DEAA5BD72653CC81B0B9CA1AFDDA4F225E2E255D361A3EC54DC5",
             "binary": false
           }]
         }'
