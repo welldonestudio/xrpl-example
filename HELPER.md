@@ -81,7 +81,10 @@ XRPL Ledger는 아래와 같은 기능들을 제공합니다.
 - [XRPL 공식 문서](https://xrpl.org/docs.html)
 - [XRPL 개발자 포럼](https://dev.to/ripplexdev)
 - [XRPL 깃허브](https://github.com/XRPLF)
+- [XRPL Dev Resource](https://linktr.ee/rippledevrel)
 
 ## 기타 리소스 모음
 
+- [2024 XRPL Hackaton](https://github.com/XRPL-Hackathon-Seoul-2024)
 - [XRPL Ledger MCP](https://github.com/strangelove-ventures/web3-mcp)
+
